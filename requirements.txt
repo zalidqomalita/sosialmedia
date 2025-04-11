@@ -13,4 +13,4 @@ wordcloud
 plotly
 Pillow
 ntscraper
-
+torpy
