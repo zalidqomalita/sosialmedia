@@ -314,6 +314,7 @@ def get_tweets_nitter(hashtag, mode, size):
 
 @st.cache_data
 def get_tweets(keyword, limit):
+     """Dibangun berdasarkan skrip ini: https://github.com/helmisatria/tweet-harvest"""
     #command = f"npx -y tweet-harvest@latest -o 'C:\\Users\\imvla\\ZalidQomalita\\Job\\3. Script\\2024\\Sosmed\\tweets-data\\tweet_lokal.csv' -s '{keyword}' --tab LATEST -l {limit} --token 694ef22c191742028586b7984792517a7e028d1c"
     command = f"npx -y tweet-harvest@latest -o tweet_lokal.csv -s '{keyword}' --tab LATEST -l {limit} --token 03b180254627d81559be9c7f7c8f8ee010843867"
     print(command)
@@ -343,10 +344,10 @@ def get_instapost(keyword,limit):
             cl = Client()
 
             # Login 
-            USERNAME = "ini.4j0b"
-            PASSWORD = "bismillah"
-            #USERNAME = st.secrets["instagram"]["username"]
-            #PASSWORD = st.secrets["instagram"]["password"]
+            #USERNAME = "ini.4j0b"
+            #PASSWORD = "bismillah"
+            USERNAME = st.secrets["instagram"]["username"]
+            PASSWORD = st.secrets["instagram"]["password"]
 
             cl.login(USERNAME, PASSWORD)
             medias = cl.hashtag_medias_recent(keyword, amount=limit)
