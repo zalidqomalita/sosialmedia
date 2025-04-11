@@ -12,3 +12,5 @@ matplotlib
 wordcloud
 plotly
 Pillow
+ntscraper
+subprocess
