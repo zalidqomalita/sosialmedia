@@ -33,16 +33,9 @@ import torch.nn as nn
 from huggingface_hub import hf_hub_download
 from io import BytesIO
 
-#from scrapy.crawler import CrawlerProcess
-
-#from selenium import webdriver
-#from selenium.webdriver.common.keys import Keys
-#from selenium.webdriver.chrome.options import Options
-#from scrapy_selenium import SeleniumRequest
 import time
 import random
 import pandas as pd
-#from selenium.webdriver.support.ui import WebDriverWait
 
 
 #######################
@@ -314,8 +307,7 @@ def get_tweets_nitter(hashtag, mode, size):
 
 @st.cache_data
 def get_tweets(keyword, limit):
-     """Dibangun berdasarkan skrip ini: https://github.com/helmisatria/tweet-harvest"""
-    #command = f"npx -y tweet-harvest@latest -o 'C:\\Users\\imvla\\ZalidQomalita\\Job\\3. Script\\2024\\Sosmed\\tweets-data\\tweet_lokal.csv' -s '{keyword}' --tab LATEST -l {limit} --token 694ef22c191742028586b7984792517a7e028d1c"
+    #Dibangun berdasarkan skrip ini: https://github.com/helmisatria/tweet-harvest
     command = f"npx -y tweet-harvest@latest -o tweet_lokal.csv -s '{keyword}' --tab LATEST -l {limit} --token 03b180254627d81559be9c7f7c8f8ee010843867"
     print(command)
     result = subprocess.run(command, shell=True, capture_output=True, text=True)
@@ -326,7 +318,6 @@ def get_tweets(keyword, limit):
         print("Perintah berhasil dijalankan!")
         print("Output:", result.stdout)
 
-        #data = pd.read_csv("C:\\Users\\imvla\\ZalidQomalita\\Job\\3. Script\\2024\\Sosmed\\tweets-data\\'tweet_lokal'.csv",delimiter=',')
         data = pd.read_csv("tweets-data\\tweet_lokal.csv",delimiter=',')
         
     else:
@@ -344,8 +335,6 @@ def get_instapost(keyword,limit):
             cl = Client()
 
             # Login 
-            #USERNAME = "ini.4j0b"
-            #PASSWORD = "bismillah"
             USERNAME = st.secrets["instagram"]["username"]
             PASSWORD = st.secrets["instagram"]["password"]
 
