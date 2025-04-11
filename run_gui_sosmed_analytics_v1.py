@@ -310,7 +310,7 @@ def get_tweets(keyword, limit):
     #Dibangun berdasarkan skrip ini: https://github.com/helmisatria/tweet-harvest
     command = f"npx -y tweet-harvest@latest -o tweet_lokal.csv -s '{keyword}' --tab LATEST -l {limit} --token 03b180254627d81559be9c7f7c8f8ee010843867"
     print(command)
-    result = subprocess.run(command, shell=True, capture_output=True, text=True)
+    result = subprocess.run(command, capture_output=True, text=True)
     
     # Cek output atau error dari eksekusi
     
