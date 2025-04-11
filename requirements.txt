@@ -1,0 +1,14 @@
+streamlit
+transformers
+torch
+huggingface_hub
+nltk
+Sastrawi
+pandas
+joblib
+deep-translator
+altair
+matplotlib
+wordcloud
+plotly
+Pillow
