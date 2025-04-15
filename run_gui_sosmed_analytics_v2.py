@@ -133,6 +133,10 @@ class model(nn.Module):
         embds = model_out.last_hidden_state # model_out[0][:,0]
         mean_pool = embds.sum(axis=1)/ x['attention_mask'].sum(axis=1).unsqueeze(axis=1)
         return mean_pool
+
+@st.cache_data
+def download_nltk_data():
+    nltk.download('punkt')
     
 @st.cache_data 
 def predict_sentiments(sentences):
@@ -282,19 +286,20 @@ def load_slang_dict():
     return dict(zip(df_slang["slang"], df_slang["formal"]))
 
 # non-formal ke formal
-def replace_slang_word(doc, slang_dict):
+@st.cache_data
+def replace_slang_word(doc, slang_word):
     #slang_word = pd.read_csv("https://raw.githubusercontent.com/nasalsabila/kamus-alay/master/colloquial-indonesian-lexicon.csv")
-    #doc = word_tokenize(doc)
-    #for index in  range(0,len(doc)-1):
-    #    index_slang = slang_word.slang==doc[index]
-    #    formal = list(set(slang_word[index_slang].formal))
-    #    if len(formal)==1:
-    #        doc[index]=formal[0]
-    #return ' '.join(doc)
-
-    words = word_tokenize(doc)
-    replaced = [slang_dict.get(word, word) for word in words]
-    return ' '.join(replaced)
+    doc = word_tokenize(doc)
+    for index in  range(0,len(doc)-1):
+        index_slang = slang_word.slang==doc[index]
+        formal = list(set(slang_word[index_slang].formal))
+        if len(formal)==1:
+            doc[index]=formal[0]
+    return ' '.join(doc)
+    
+    #words = word_tokenize(doc)
+    #replaced = [slang_dict.get(word, word) for word in words]
+    #return ' '.join(replaced)
 
 
 @st.cache_data
@@ -393,6 +398,7 @@ def main():
                 print("------------ Data Loaded --------------")
 
             # Preprocessing Data
+            download_nltk_data()
             file['full_text'] = file['full_text'].apply(lambda x: clean_text(x))
             processed_text = file['full_text'].apply(lambda x: preprocess_text_sastrawi(x))
             print(processed_text)
