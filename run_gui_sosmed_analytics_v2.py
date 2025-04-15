@@ -134,7 +134,7 @@ class model(nn.Module):
         mean_pool = embds.sum(axis=1)/ x['attention_mask'].sum(axis=1).unsqueeze(axis=1)
         return mean_pool
 
-@st.cache_data
+
 def download_nltk_data():
     nltk.download('punkt')
     
