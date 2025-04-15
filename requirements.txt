@@ -13,3 +13,4 @@ wordcloud
 plotly
 Pillow
 sqlalchemy
+pymysql
