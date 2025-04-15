@@ -12,6 +12,3 @@ matplotlib
 wordcloud
 plotly
 Pillow
-ntscraper
-torpy
-instagrapi
