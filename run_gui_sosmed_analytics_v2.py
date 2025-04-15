@@ -3,6 +3,7 @@ import pandas as pd
 from transformers import AutoModel, AutoTokenizer
 import torch.nn as nn
 import torch
+import nltk
 from nltk.tokenize import word_tokenize
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 import altair as alt
