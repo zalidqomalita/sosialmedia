@@ -12,3 +12,4 @@ matplotlib
 wordcloud
 plotly
 Pillow
+sqlalchemy
