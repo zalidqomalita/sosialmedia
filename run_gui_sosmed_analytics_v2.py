@@ -3,7 +3,7 @@ import pandas as pd
 from transformers import AutoModel, AutoTokenizer
 import torch.nn as nn
 import torch
-import nltk
+from nltk.tokenize import WhitespaceTokenizer
 from nltk.tokenize import word_tokenize
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 import altair as alt
@@ -134,10 +134,6 @@ class model(nn.Module):
         embds = model_out.last_hidden_state # model_out[0][:,0]
         mean_pool = embds.sum(axis=1)/ x['attention_mask'].sum(axis=1).unsqueeze(axis=1)
         return mean_pool
-
-
-def download_nltk_data():
-    nltk.download('punkt')
     
 @st.cache_data 
 def predict_sentiments(sentences):
@@ -277,7 +273,8 @@ def preprocess_text_sastrawi(text):
     factory = StopWordRemoverFactory()
     stopword_sastrawi = factory.get_stop_words()
 
-    tokens = word_tokenize(text)  # Tokenization
+    tokenizer = WhitespaceTokenizer()
+    tokens = tokenizer.tokenize(text)  # Tokenization
     #tokens = [word for word in tokens if word not in stopword_sastrawi]  # Remove stop words
   
     return ' '.join(tokens)
