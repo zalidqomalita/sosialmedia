@@ -294,7 +294,7 @@ def load_slang_dict():
     return dict(zip(df_slang["slang"], df_slang["formal"]))
 
 # non-formal ke formal
-def replace_slang_word(text, slang_dict):
+def replace_slang_word(text, slang_word):
     #slang_word = pd.read_csv("https://raw.githubusercontent.com/nasalsabila/kamus-alay/master/colloquial-indonesian-lexicon.csv")
     try:
         if not isinstance(text, str):
