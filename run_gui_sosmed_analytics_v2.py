@@ -358,18 +358,15 @@ def get_instacomment(hari,_engine):
 
     return df_insta
 
-
 def make_wordcloud(text_cloud):
     mask = np.array(Image.open('mask kota bandung.jpg'))
-    #wordcloud = WordCloud(width=600, height=400, max_words=250,colormap='twilight',collocations=True, contour_width=1, mask=mask,contour_color='grey', background_color='white').generate(text_cloud)
-    wordcloud = WordCloud(width=600, height=400, max_words=250,colormap='twilight',collocations=True, contour_width=1, contour_color='grey', background_color='white').generate(text_cloud)
-   
+    wordcloud = WordCloud(width=600, height=400, max_words=250, colormap='twilight', collocations=True, contour_width=1, mask=mask,contour_color='grey', background_color='white').generate(text_cloud)
+    
     fig, ax = plt.subplots()
     print(wordcloud)
     ax.imshow(wordcloud, interpolation='bilinear')
     ax.axis("off")
     st.pyplot(fig)
-
 
 def remove_stopword(words):
     factory = StopWordRemoverFactory()
@@ -506,8 +503,6 @@ def main():
         col2 =  st.columns(1)
         with col2[0]:
             st.markdown('#### Proporsi Sentimen')
-            
-            st.write("Predict Sentiments...")
             results = predict_sentiments(clean_data.to_list())
             print(results)
             
@@ -546,8 +541,7 @@ def main():
                 column=alt.Column('topik:O'),
                 ).configure_header(labelOrient='bottom').configure_scale(bandPaddingInner=0,bandPaddingOuter=0.1,)
             st.altair_chart(c)
-            
-                    
+                                
         col4 = st.columns(1)    
         with col4[0]:
             if selected_sosmed=="Twitter":
@@ -556,7 +550,6 @@ def main():
             if selected_sosmed=="Instagram":
                 df_output = pd.concat([df_class,pd.DataFrame(polarity),file['tanggal_post'],file['waktu_post'],file['post_caption'], file['nama_akun'],file['username'],file['full_text'],file['tanggal_komentar']],axis=1)
                 df_output.dropna(subset=['full_text'])
-
 
             df_output.columns = nama_kolom
             df_output.drop(columns=['Text'],inplace=True)
