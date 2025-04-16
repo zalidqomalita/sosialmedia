@@ -265,7 +265,8 @@ def clean_text(text):
     #teks = teks.lower()  # Convert ke lowercase
     
     return text
-
+def simple_tokenize(text):
+    return text.split()
 # tokenize, remove stop words
 def preprocess_text_sastrawi(text):
     factory = StopWordRemoverFactory()
@@ -432,7 +433,7 @@ def main():
             df_class.columns = ["teks","topik"]
             
             
-            word =  df_class['teks'].apply(word_tokenize)
+            word =  df_class['teks'].apply(simple_tokenize)
             print(word)
 
             # Wordcloud
