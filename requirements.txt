@@ -14,3 +14,4 @@ plotly
 Pillow
 sqlalchemy
 pymysql
+scikit-learn
