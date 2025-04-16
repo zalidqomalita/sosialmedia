@@ -394,7 +394,7 @@ def main():
                 print("------------ Data Loaded --------------")
 
             # Preprocessing Data
-            download_nltk_data()
+            
             file['full_text'] = file['full_text'].apply(lambda x: clean_text(x))
             processed_text = file['full_text'].apply(lambda x: preprocess_text_sastrawi(x))
             print(processed_text)
