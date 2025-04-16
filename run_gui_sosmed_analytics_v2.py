@@ -205,7 +205,6 @@ class BertClassifier(nn.Module):
         return x
 
 
-@st.cache_data 
 def get_topik(kata):
     print("------------Load Model----------")
     checkpoint = 'indolem/indobertweet-base-uncased'
