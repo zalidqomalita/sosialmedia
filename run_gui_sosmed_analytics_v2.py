@@ -3,8 +3,6 @@ import pandas as pd
 from transformers import AutoModel, AutoTokenizer
 import torch.nn as nn
 import torch
-from nltk.tokenize import WhitespaceTokenizer
-from nltk.tokenize import word_tokenize
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 import altair as alt
 import re
@@ -273,8 +271,8 @@ def preprocess_text_sastrawi(text):
     factory = StopWordRemoverFactory()
     stopword_sastrawi = factory.get_stop_words()
 
-    tokenizer = WhitespaceTokenizer()
-    tokens = tokenizer.tokenize(text)  # Tokenization
+  
+    tokens = text.split()   # Tokenization sederhana
     #tokens = [word for word in tokens if word not in stopword_sastrawi]  # Remove stop words
   
     return ' '.join(tokens)
