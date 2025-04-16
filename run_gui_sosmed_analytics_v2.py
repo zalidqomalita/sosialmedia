@@ -285,7 +285,9 @@ def load_slang_dict():
 @st.cache_data
 def replace_slang_word(doc, slang_word):
     #slang_word = pd.read_csv("https://raw.githubusercontent.com/nasalsabila/kamus-alay/master/colloquial-indonesian-lexicon.csv")
-    doc = word_tokenize(doc)
+    if not isinstance(doc, str):
+        return ''
+    doc = doc.split()
     for index in  range(0,len(doc)-1):
         index_slang = slang_word.slang==doc[index]
         formal = list(set(slang_word[index_slang].formal))
