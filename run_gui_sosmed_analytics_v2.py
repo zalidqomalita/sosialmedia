@@ -301,6 +301,7 @@ def replace_slang_word(text, slang_word):
             return ''
         words = text.split()  # atau pakai simple_tokenize(text) dari sebelumnya
         replaced_words = []
+        print("-------word in replace slang",words)
 
         for index in  range(0,len(text)-1):
             index_slang = slang_word.slang==text[index]
@@ -358,7 +359,7 @@ def get_instacomment(hari,_engine):
 
 
 def make_wordcloud(text_cloud):
-    mask = np.array(Image.open('C:\\Users\\imvla\\ZalidQomalita\\Job\\3. Script\\2024\\Sosmed\\mask kota bandung.jpg'))
+    mask = np.array(Image.open('mask kota bandung.jpg'))
     wordcloud = WordCloud(width=600, height=400, max_words=250,colormap='twilight',collocations=True, contour_width=1, mask=mask,contour_color='grey', background_color='white').generate(text_cloud)
     fig, ax = plt.subplots()
     print(wordcloud)
@@ -421,6 +422,7 @@ def main():
 
             # Text Normalization / Noise Removal
             slang_dict = load_slang_dict()
+            print(slang_dict)
             final_text = processed_text.apply(lambda x : replace_slang_word(x,slang_dict))
             clean_data = final_text
             print("---------------- Finish Cleaning --------------------")
