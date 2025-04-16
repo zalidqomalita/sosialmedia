@@ -301,11 +301,18 @@ def replace_slang_word(text, slang_dict):
             return ''
         words = text.split()  # atau pakai simple_tokenize(text) dari sebelumnya
         replaced_words = []
-        for word in words:
+
+        for index in  range(0,len(text)-1):
+            index_slang = slang_word.slang==text[index]
+            formal = list(set(slang_word[index_slang].formal))
+            if len(formal)==1:
+                doc[index]=formal[0]
+                
+        #for word in words:
             # Cari padanan slang, fallback ke kata aslinya jika tidak ada
-            replaced = slang_dict.get(word, word)
-            replaced_words.append(replaced)
-        return ' '.join(replaced_words)
+            #replaced = slang_dict.get(word, word)
+            #replaced_words.append(replaced)
+        return ' '.join(doc)
     except Exception as e:
         print(f"Error in replace_slang_word: {e}")
         return ''
