@@ -270,12 +270,23 @@ def clean_text(text):
 def preprocess_text_sastrawi(text):
     factory = StopWordRemoverFactory()
     stopword_sastrawi = factory.get_stop_words()
-
-  
-    tokens = text.split()   # Tokenization sederhana
-    #tokens = [word for word in tokens if word not in stopword_sastrawi]  # Remove stop words
-  
-    return ' '.join(tokens)
+    try:
+        if not isinstance(text, str):
+            return ''
+        # Lowercase
+        text = text.lower()
+        # Hapus URL
+        text = re.sub(r"http\S+|www.\S+", "", text)
+        # Hapus mention, hashtag, angka, simbol
+        text = re.sub(r"@\w+|#\w+|\d+|[^\w\s]", "", text)
+        # Tokenisasi sederhana
+        tokens = simple_tokenize(text)
+        # Stemming
+        stemmed_tokens = [stemmer.stem(token) for token in tokens]
+        return ' '.join(stemmed_tokens)
+    except Exception as e:
+        print(f"Error in preprocess_text_sastrawi: {e}")
+        return ''
 
 def load_slang_dict():
     df_slang = pd.read_csv("https://raw.githubusercontent.com/nasalsabila/kamus-alay/master/colloquial-indonesian-lexicon.csv")
@@ -285,15 +296,19 @@ def load_slang_dict():
 @st.cache_data
 def replace_slang_word(doc, slang_word):
     #slang_word = pd.read_csv("https://raw.githubusercontent.com/nasalsabila/kamus-alay/master/colloquial-indonesian-lexicon.csv")
-    if not isinstance(doc, str):
+    try:
+        if not isinstance(text, str):
+            return ''
+        words = text.split()  # atau pakai simple_tokenize(text) dari sebelumnya
+        replaced_words = []
+        for word in words:
+            # Cari padanan slang, fallback ke kata aslinya jika tidak ada
+            replaced = slang_dict.get(word, word)
+            replaced_words.append(replaced)
+        return ' '.join(replaced_words)
+    except Exception as e:
+        print(f"Error in replace_slang_word: {e}")
         return ''
-    words = doc.split()
-    result = [slang_dict.get(word, word) for word in words]
-    return ' '.join(result)
-    
-    #words = word_tokenize(doc)
-    #replaced = [slang_dict.get(word, word) for word in words]
-    #return ' '.join(replaced)
 
 
 @st.cache_data
