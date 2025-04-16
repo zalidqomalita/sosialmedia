@@ -282,9 +282,8 @@ def preprocess_text_sastrawi(text):
         text = re.sub(r"@\w+|#\w+|\d+|[^\w\s]", "", text)
         # Tokenisasi sederhana
         tokens = simple_tokenize(text)
-        # Stemming
-        stemmed_tokens = [stemmer.stem(token) for token in tokens]
-        return ' '.join(stemmed_tokens)
+    
+        return ' '.join(tokens)
     except Exception as e:
         print(f"Error in preprocess_text_sastrawi: {e}")
         return ''
