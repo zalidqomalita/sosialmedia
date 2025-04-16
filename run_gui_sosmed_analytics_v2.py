@@ -288,7 +288,8 @@ def preprocess_text_sastrawi(text):
     except Exception as e:
         print(f"Error in preprocess_text_sastrawi: {e}")
         return ''
-
+        
+@st.cache_data
 def load_slang_dict():
     df_slang = pd.read_csv("https://raw.githubusercontent.com/nasalsabila/kamus-alay/master/colloquial-indonesian-lexicon.csv")
     return dict(zip(df_slang["slang"], df_slang["formal"]))
@@ -360,7 +361,9 @@ def get_instacomment(hari,_engine):
 
 def make_wordcloud(text_cloud):
     mask = np.array(Image.open('mask kota bandung.jpg'))
-    wordcloud = WordCloud(width=600, height=400, max_words=250,colormap='twilight',collocations=True, contour_width=1, mask=mask,contour_color='grey', background_color='white').generate(text_cloud)
+    #wordcloud = WordCloud(width=600, height=400, max_words=250,colormap='twilight',collocations=True, contour_width=1, mask=mask,contour_color='grey', background_color='white').generate(text_cloud)
+    wordcloud = WordCloud(width=600, height=400, max_words=250,colormap='twilight',collocations=True, contour_width=1, contour_color='grey', background_color='white').generate(text_cloud)
+   
     fig, ax = plt.subplots()
     print(wordcloud)
     ax.imshow(wordcloud, interpolation='bilinear')
