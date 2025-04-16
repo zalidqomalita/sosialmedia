@@ -287,13 +287,9 @@ def replace_slang_word(doc, slang_word):
     #slang_word = pd.read_csv("https://raw.githubusercontent.com/nasalsabila/kamus-alay/master/colloquial-indonesian-lexicon.csv")
     if not isinstance(doc, str):
         return ''
-    doc = doc.split()
-    for index in  range(0,len(doc)-1):
-        index_slang = slang_word.slang==doc[index]
-        formal = list(set(slang_word[index_slang].formal))
-        if len(formal)==1:
-            doc[index]=formal[0]
-    return ' '.join(doc)
+    words = doc.split()
+    result = [slang_dict.get(word, word) for word in words]
+    return ' '.join(result)
     
     #words = word_tokenize(doc)
     #replaced = [slang_dict.get(word, word) for word in words]
