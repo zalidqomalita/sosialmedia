@@ -267,6 +267,7 @@ def clean_text(text):
     return text
 def simple_tokenize(text):
     return text.split()
+    
 # tokenize, remove stop words
 def preprocess_text_sastrawi(text):
     factory = StopWordRemoverFactory()
@@ -293,8 +294,7 @@ def load_slang_dict():
     return dict(zip(df_slang["slang"], df_slang["formal"]))
 
 # non-formal ke formal
-@st.cache_data
-def replace_slang_word(text, slang_word):
+def replace_slang_word(text, slang_dict):
     #slang_word = pd.read_csv("https://raw.githubusercontent.com/nasalsabila/kamus-alay/master/colloquial-indonesian-lexicon.csv")
     try:
         if not isinstance(text, str):
