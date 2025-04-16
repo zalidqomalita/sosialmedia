@@ -345,7 +345,7 @@ def get_instacomment(hari,_engine):
     n_days_ago = (datetime.now() - timedelta(days=hari)).date()
 
     # --- Query dengan filter tanggal ---
-    query = text(f"""SELECT * FROM instagram_comment WHERE tanggal_komentar >= :start_date""")
+    query = text(f"""SELECT * FROM instagram_comment WHERE tanggal_post >= :start_date""")
 
     with _engine.connect() as conn:
         df_insta = pd.read_sql(query, conn, params={"start_date": n_days_ago}) 
