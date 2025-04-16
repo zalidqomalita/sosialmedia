@@ -217,6 +217,7 @@ def get_topik(kata):
         repo_type="model")
     
     model_load = joblib.load(model_path)
+    print("Model path:", model_path)
 
     print("-------------Model Loaded. Start Prediction --------------")
     # dataloader
