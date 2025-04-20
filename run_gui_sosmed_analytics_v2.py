@@ -353,7 +353,7 @@ def get_instacomment(hari,_engine):
 
 def make_wordcloud(text_cloud):
     mask = np.array(Image.open('mask kota bandung.jpg'))
-    wordcloud = WordCloud(width=600, height=400, max_words=250, colormap='twilight', collocations=True, contour_width=1, mask=mask,contour_color='grey', background_color='white').generate(text_cloud)
+    wordcloud = WordCloud(width=600, height=400, max_words=250, colormap='twilight', collocations=False, contour_width=1, mask=mask,contour_color='grey', background_color='white').generate(text_cloud)
     
     fig, ax = plt.subplots()
     print(wordcloud)
