@@ -301,8 +301,9 @@ def replace_slang_word(text, slang_word):
         if not isinstance(text, str):
             return ''
         words = text.split()  # atau pakai simple_tokenize(text) dari sebelumnya
-        replaced_words = [slang_dict.get(word, word) for word in words]
-                
+        print("-------word in replace slang",words)
+
+        replaced_words = [slang_word.get(word, word) for word in words]
         #for word in words:
             # Cari padanan slang, fallback ke kata aslinya jika tidak ada
             #replaced = slang_dict.get(word, word)
@@ -353,8 +354,7 @@ def get_instacomment(hari,_engine):
 
 def make_wordcloud(text_cloud):
     mask = np.array(Image.open('mask kota bandung.jpg'))
-    st.write(len(text_cloud))
-    wordcloud = WordCloud(width=600, height=400, max_words=250, colormap='twilight', collocations=False, contour_width=1, contour_color='grey', background_color='white').generate(text_cloud)
+    wordcloud = WordCloud(width=600, height=400, max_words=250, colormap='twilight', collocations=True, contour_width=1, mask=mask,contour_color='grey', background_color='white').generate(text_cloud)
     
     fig, ax = plt.subplots()
     print(wordcloud)
@@ -404,6 +404,7 @@ def main():
                 file = get_instacomment(int(hari), _engine=engine)
                 print(file_post)
                 print(file)
+                komen_ori = file['full_text']
                 teks_metriks = 'Post'
                 nama_kolom = ["Text","Topik","Sentimen","Tanggal Post","Waktu Post","Post Caption","Nama Akun","Username","Komentar","Tanggal Komentar"]
                 print("------------ Data Loaded --------------")
@@ -427,7 +428,7 @@ def main():
             prediksi = get_topik(clean_data)
                 
             # Klasifikasikan
-            hasil = pd.Series(prediksi).map({1:'ekonomi', 2: 'teknologi', 3:'hukum', 4:'sosial', 5:'kesehatan', 6:'politik', 7:'hiburan',8:'kependudukan', 9:'lingkungan hidup', 10:'infrastruktur', 11:'pendidikan', 12:'administrasi pemerintahan' })
+            hasil = pd.Series(prediksi).map({1:'ekonomi', 2:'teknologi', 3:'hukum', 4:'kesehatan', 5:'politik', 6:'hiburan', 7:'infrastruktur dan lingkungan', 8:'pendidikan', 9:'lainnya' })
             topik = pd.concat([clean_data, hasil.to_frame()], axis=1)
             print(topik)
 
@@ -440,7 +441,7 @@ def main():
 
             # Wordcloud
             st.write("Get Wordcloud...")
-            word_v = word #.apply(remove_stopword)
+            word_v = word.apply(remove_stopword)
             combined_list = list(chain(*word_v))
             text_cloud = " ".join(combined_list)
             placeholder.empty()
@@ -470,8 +471,8 @@ def main():
 
         with col[2]:
             st.markdown('#### Top Topik')
-            df_class = df_class[df_class['topik'] != 'pendidikan']
             df_class_count = df_class['topik'].value_counts()
+            print(df_class_count)
             # Convert ke dataframe
             topik_counts_df = df_class_count.reset_index()
             topik_counts_df.columns = ['topik', 'jumlah']
@@ -542,7 +543,7 @@ def main():
                 df_output = pd.concat([df_class,pd.DataFrame(polarity),file['created_at'],file['full_text'],file['favorite_count'], file['reply_count'],file['retweet_count']], axis=1)
                 df_output.dropna(subset=['full_text'])
             if selected_sosmed=="Instagram":
-                df_output = pd.concat([df_class,pd.DataFrame(polarity),file['tanggal_post'],file['waktu_post'],file['post_caption'], file['nama_akun'],file['username'],file['full_text'],file['tanggal_komentar']],axis=1)
+                df_output = pd.concat([df_class,pd.DataFrame(polarity),file['tanggal_post'],file['waktu_post'],file['post_caption'], file['nama_akun'],file['username'],komen_ori,file['tanggal_komentar']],axis=1)
                 df_output.dropna(subset=['full_text'])
 
             df_output.columns = nama_kolom
