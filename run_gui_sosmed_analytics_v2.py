@@ -365,6 +365,7 @@ def replace_with_emoji(text):
     r"\bpasar\b": "🛒",
     r"\bmonako\b": "🌍",  # contoh aja
     r"\bwali\b": "🧑‍💼"
+    }
     for pattern, emoji_char in emoji_map.items():
         text = re.sub(pattern, emoji_char, text, flags=re.IGNORECASE)
     return text
