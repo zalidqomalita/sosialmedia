@@ -352,7 +352,25 @@ def get_instacomment(hari,_engine):
 
     return df_insta
 
+# Fungsi ganti deskripsi ke emoji
+def replace_with_emoji(text):
+    emoji_map = {
+    r"\bhati merah\b": "❤️",
+    r"\bhati\b": "❤️",
+    r"\bapi\b": "🔥",
+    r"\bair mata\b": "😢",
+    r"\bwajah\b": "🙂",
+    r"\bpak\b": "👨",
+    r"\bkerja\b": "💼",
+    r"\bpasar\b": "🛒",
+    r"\bmonako\b": "🌍",  # contoh aja
+    r"\bwali\b": "🧑‍💼"
+    for pattern, emoji_char in emoji_map.items():
+        text = re.sub(pattern, emoji_char, text, flags=re.IGNORECASE)
+    return text
+
 def make_wordcloud(text_cloud):
+    text_cloud = replace_with_emoji(text_cloud)
     mask = np.array(Image.open('mask kota bandung.jpg'))
     wordcloud = WordCloud(width=600, height=400, max_words=250, colormap='twilight', collocations=True, contour_width=1, mask=mask,contour_color='grey', background_color='white').generate(text_cloud)
     
