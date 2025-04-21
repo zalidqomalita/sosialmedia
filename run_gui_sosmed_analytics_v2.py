@@ -357,7 +357,9 @@ def replace_with_emoji(text):
     emoji_map = {
     r"\bhati merah\b": "❤️",
     r"\bhati\b": "❤️",
+    r"\bheart\b": "❤️",
     r"\bapi\b": "🔥",
+    r"\bfire\b": "🔥",
     r"\bair mata\b": "😢",
     r"\bwajah\b": "🙂",
     r"\bpak\b": "👨",
