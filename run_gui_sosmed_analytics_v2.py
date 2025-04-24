@@ -107,7 +107,8 @@ st.markdown("""
 
 </style>
 """, unsafe_allow_html=True)
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+#device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = "cpu"
 print(device)
 
 class model(nn.Module):
