@@ -378,7 +378,7 @@ def replace_with_emoji(text):
     return text
 
 def make_wordcloud(text_cloud):
-    text_cloud = replace_with_emoji(text_cloud)
+    #text_cloud = replace_with_emoji(text_cloud)
     mask = np.array(Image.open('mask kota bandung.jpg'))
     wordcloud = WordCloud(width=600, height=400, max_words=250, colormap='twilight', collocations=True, contour_width=1, mask=mask,contour_color='grey', background_color='white').generate(text_cloud)
     
