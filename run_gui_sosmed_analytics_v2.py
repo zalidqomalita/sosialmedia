@@ -291,24 +291,28 @@ def preprocess_text_sastrawi(text):
         return ''
         
 @st.cache_data
-def load_slang_dict():
+def load_slang_dict(_engine):
     df_slang = pd.read_csv("https://raw.githubusercontent.com/nasalsabila/kamus-alay/master/colloquial-indonesian-lexicon.csv")
-    return dict(zip(df_slang["slang"], df_slang["formal"]))
+    query = text(f"""SELECT sundanese, indonesian FROM word""")
+
+    with _engine.connect() as conn:
+        df_word = pd.read_sql(query, conn)
+
+    df_word.columns = ["slang","formal"]
+    df_slang_all = pd.concat([df_slang[["slang","formal"]], df_word])
+
+    return dict(zip(df_slang_all["slang"], df_slang_all["formal"]))
 
 # non-formal ke formal
 def replace_slang_word(text, slang_word):
-    #slang_word = pd.read_csv("https://raw.githubusercontent.com/nasalsabila/kamus-alay/master/colloquial-indonesian-lexicon.csv")
     try:
         if not isinstance(text, str):
             return ''
-        words = text.split()  # atau pakai simple_tokenize(text) dari sebelumnya
-        print("-------word in replace slang",words)
+        words = text.split()
+        print("------- word in replace slang",words)
 
         replaced_words = [slang_word.get(word, word) for word in words]
-        #for word in words:
-            # Cari padanan slang, fallback ke kata aslinya jika tidak ada
-            #replaced = slang_dict.get(word, word)
-            #replaced_words.append(replaced)
+
         return ' '.join(replaced_words)
     except Exception as e:
         print(f"Error in replace_slang_word: {e}")
@@ -432,13 +436,12 @@ def main():
                 print("------------ Data Loaded --------------")
 
             # Preprocessing Data
-            
             file['full_text'] = file['full_text'].apply(lambda x: clean_text(x))
             processed_text = file['full_text'].apply(lambda x: preprocess_text_sastrawi(x))
             print(processed_text)
 
             # Text Normalization / Noise Removal
-            slang_dict = load_slang_dict()
+            slang_dict = load_slang_dict(engine)
             print(slang_dict)
             final_text = processed_text.apply(lambda x : replace_slang_word(x,slang_dict))
             clean_data = final_text
@@ -480,7 +483,7 @@ def main():
                 st.metric(teks_metriks, len(file_post))
                 st.metric("Akun", file_post['nama_akun'].nunique())
                 st.metric("Komentar", pd.to_numeric(file_post['jumlah_komentar'],errors='coerce').sum())
-                #file['created_at'] =file['created_at'].dt.date
+               
 
             # Hitung jumlah hari unik
             unique_days_count = file_post['tanggal_post'].nunique()
