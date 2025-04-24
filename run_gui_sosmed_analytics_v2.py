@@ -255,7 +255,7 @@ def clean_text(text):
 
     text = text.replace('\n', ' ')  # replace new line into space
   
-    text = GoogleTranslator(target='id').translate(text)
+    #text = GoogleTranslator(target='id').translate(text)
     text = text.lower() 
     text = text.strip(' ')
     
