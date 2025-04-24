@@ -191,9 +191,9 @@ class BertClassifier(nn.Module):
         self.classifier = nn.Sequential(
             nn.Linear(self.bert.config.hidden_size, 300),
             nn.ReLU(),
-            nn.Linear(300, 100),
+            nn.Linear(300, 150),
             nn.ReLU(),
-            nn.Linear(100, 50),
+            nn.Linear(150, 50),
             nn.ReLU(),
             nn.Linear(50, num_labels)
         )
