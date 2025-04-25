@@ -320,9 +320,17 @@ def replace_slang_word(text, slang_word):
 
 
 @st.cache_data
-def get_tweets(limit):
-    data = pd.DataFrame()
-    return data
+def get_tweets(hari,_engine):
+    n_days_ago = (datetime.now() - timedelta(days=hari)).date()
+    # --- Query dengan filter tanggal ---
+    query = text(f"""SELECT * FROM twitter_post WHERE date >= :start_date""")
+
+    with _engine.connect() as conn:
+        df_twitter = pd.read_sql(query, conn, params={"start_date": n_days_ago})
+
+    df_twitter.columns = ["id","created_at", "tanggal_post", "username", "full_text", "favorite_count", "reply_count","retweet_count"]
+    df_twitter.drop(columns=["id"], axis=1,inplace=True)
+    return df_twitter
 
 @st.cache_data
 def get_instapost(hari,_engine):
@@ -421,7 +429,8 @@ def main():
             st.write("Processing...")
             print(selected_sosmed)
             if selected_sosmed=="Twitter":
-                file = get_tweets(int(hari), _engine=engine)
+                file = get_tweets(hari = int(hari), _engine=engine)
+                tweet_ori = file['full_text']
                 teks_metriks = 'Tweet'
                 nama_kolom = ['Text','Topik','Sentimen','Tanggal Posting','Teks','Jumlah Like','Jumlah Reply','Jumlah Retweet']
 
@@ -478,6 +487,7 @@ def main():
                 st.metric(teks_metriks, len(file))
                 st.metric("User", file['username'].nunique())
                 file['created_at'] = pd.to_datetime(file['created_at'], format="%a %b %d %H:%M:%S %z %Y").dt.date
+                file_post = file
             if selected_sosmed=="Instagram":
                 st.markdown("#### Jumlah/Total")
                 st.metric(teks_metriks, len(file_post))
@@ -565,7 +575,7 @@ def main():
         col4 = st.columns(1)    
         with col4[0]:
             if selected_sosmed=="Twitter":
-                df_output = pd.concat([df_class,pd.DataFrame(polarity),file['created_at'],file['full_text'],file['favorite_count'], file['reply_count'],file['retweet_count']], axis=1)
+                df_output = pd.concat([df_class,pd.DataFrame(polarity),file['tanggal_post'],tweet_ori,file['favorite_count'], file['reply_count'],file['retweet_count']], axis=1)
                 df_output.dropna(subset=['full_text'])
             if selected_sosmed=="Instagram":
                 df_output = pd.concat([df_class,pd.DataFrame(polarity),file['tanggal_post'],file['waktu_post'],file['post_caption'], file['nama_akun'],file['username'],komen_ori,file['tanggal_komentar']],axis=1)
