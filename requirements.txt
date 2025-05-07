@@ -1,6 +1,6 @@
 streamlit
 transformers
-torch==2.4.1
+torch
 huggingface_hub
 nltk
 Sastrawi
