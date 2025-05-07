@@ -209,7 +209,7 @@ class BertClassifier(nn.Module):
 def get_topik(kata):
     print("------------Load Model----------")
     checkpoint = 'indolem/indobertweet-base-uncased'
-    indobert = AutoModel.from_pretrained(checkpoint)
+    indobert = model(checkpoint, freeze=True)
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 
     model_path = hf_hub_download(
@@ -365,28 +365,7 @@ def get_instacomment(hari,_engine):
 
     return df_insta
 
-# Fungsi ganti deskripsi ke emoji
-def replace_with_emoji(text):
-    emoji_map = {
-    r"\bhati merah\b": "❤️",
-    r"\bhati\b": "❤️",
-    r"\bheart\b": "❤️",
-    r"\bapi\b": "🔥",
-    r"\bfire\b": "🔥",
-    r"\bair mata\b": "😢",
-    r"\bwajah\b": "🙂",
-    r"\bpak\b": "👨",
-    r"\bkerja\b": "💼",
-    r"\bpasar\b": "🛒",
-    r"\bmonako\b": "🌍",  # contoh aja
-    r"\bwali\b": "🧑‍💼"
-    }
-    for pattern, emoji_char in emoji_map.items():
-        text = re.sub(pattern, emoji_char, text, flags=re.IGNORECASE)
-    return text
-
 def make_wordcloud(text_cloud):
-    #text_cloud = replace_with_emoji(text_cloud)
     mask = np.array(Image.open('mask kota bandung.jpg'))
     wordcloud = WordCloud(width=600, height=400, max_words=250, colormap='twilight', collocations=True, contour_width=1, mask=mask,contour_color='grey', background_color='white').generate(text_cloud)
     
@@ -445,6 +424,7 @@ def main():
                 print("------------ Data Loaded --------------")
 
             # Preprocessing Data
+            
             file['full_text'] = file['full_text'].apply(lambda x: clean_text(x))
             processed_text = file['full_text'].apply(lambda x: preprocess_text_sastrawi(x))
             print(processed_text)
@@ -493,7 +473,7 @@ def main():
                 st.metric(teks_metriks, len(file_post))
                 st.metric("Akun", file_post['nama_akun'].nunique())
                 st.metric("Komentar", pd.to_numeric(file_post['jumlah_komentar'],errors='coerce').sum())
-               
+                #file['created_at'] =file['created_at'].dt.date
 
             # Hitung jumlah hari unik
             unique_days_count = file_post['tanggal_post'].nunique()
@@ -578,7 +558,7 @@ def main():
                 df_output = pd.concat([df_class,pd.DataFrame(polarity),file['tanggal_post'],tweet_ori,file['favorite_count'], file['reply_count'],file['retweet_count']], axis=1)
                 df_output.dropna(subset=['full_text'])
             if selected_sosmed=="Instagram":
-                df_output = pd.concat([df_class,pd.DataFrame(polarity),file['tanggal_post'],file['waktu_post'],file['post_caption'], file['nama_akun'],file['username'],komen_ori,file['tanggal_komentar']],axis=1)
+                df_output = pd.concat([df_class,pd.DataFrame(polarity),file['tanggal_post'],file['waktu_post'],file['post_caption'], file['nama_akun'],file['username'],file['full_text'],file['tanggal_komentar']],axis=1)
                 df_output.dropna(subset=['full_text'])
 
             df_output.columns = nama_kolom
