@@ -28,7 +28,13 @@ import pandas as pd
 from sqlalchemy import create_engine, text
 from datetime import datetime, timedelta
 
+import asyncio
 
+try:
+    asyncio.get_running_loop()
+except RuntimeError:
+    asyncio.run(asyncio.sleep(0))  # Initialize event loop
+    
 #######################
 # Page configuration
 st.set_page_config(
@@ -37,8 +43,9 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded")
 
+@alt.theme.register('my_custom_theme', enable=True)
 def my_custom_theme():
-    return {
+    return alt.themes.ThemeConfig({
         'config': {
             'background': 'white',
             'view': {'stroke': 'transparent'},  # No border around the chart
@@ -50,11 +57,11 @@ def my_custom_theme():
                 'titleFontSize': 14,
             },
         }
-    }
+    })
 
 # Register and enable the custom theme
-alt.themes.register('my_custom_theme', my_custom_theme)
-alt.themes.enable('my_custom_theme')
+#alt.themes.register('my_custom_theme', my_custom_theme)
+#alt.themes.enable('my_custom_theme')
 
 
 #######################
