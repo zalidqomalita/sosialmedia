@@ -209,8 +209,8 @@ class BertClassifier(nn.Module):
 def get_topik(kata):
     print("------------Load Model----------")
     checkpoint = 'indolem/indobertweet-base-uncased'
-    indobert = model(checkpoint, freeze=True)
-    tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+    indobert = AutoModel.from_pretrained(checkpoint, token=True)
+    tokenizer = AutoTokenizer.from_pretrained(checkpoint, token=True)
 
     model_path = hf_hub_download(
         repo_id="zqomalita/kelas-topik",
