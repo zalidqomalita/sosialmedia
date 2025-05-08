@@ -1,12 +1,9 @@
 import joblib
 import pandas as pd
 from transformers import AutoModel, AutoTokenizer
-import torch.nn as nn
 import torch
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
-import altair as alt
 import re
-import streamlit as st
 import torch.nn.functional as F
 import joblib
 from deep_translator import GoogleTranslator
