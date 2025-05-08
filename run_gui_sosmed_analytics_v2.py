@@ -55,8 +55,8 @@ def my_custom_theme():
     })
 
 # Register and enable the custom theme
-#alt.themes.register('my_custom_theme', my_custom_theme)
-#alt.themes.enable('my_custom_theme')
+alt.themes.register('my_custom_theme', my_custom_theme)
+alt.themes.enable('my_custom_theme')
 
 
 #######################
@@ -110,8 +110,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-device = "cpu"
-print(device)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class model(nn.Module):
     def __init__(self, checkpoint, freeze=False, device='cpu'):
@@ -150,11 +149,11 @@ def predict_sentiments(sentences):
     
     print("-----------Model Loaded. Start Prediction------------")
     # Load saved model
-    model = BertClassifier(num_labels=3)
-    model.load_state_dict(torch.load(model_path,map_location=torch.device('cpu')))
-    model.to(device)
+    modelSent = BertClassifier(num_labels=3)
+    modelSent.load_state_dict(torch.load(model_path,map_location=torch.device('cpu')))
+    modelSent.to(device)
 
-    model.eval()  
+    modelSent.eval()  
     max_length = 256 
 
     # Tokenize input
