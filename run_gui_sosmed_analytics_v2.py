@@ -33,7 +33,8 @@ import asyncio
 try:
     asyncio.get_running_loop()
 except RuntimeError:
-    asyncio.run(asyncio.sleep(0))  # Initialize event loop
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
     
 #######################
 # Page configuration
