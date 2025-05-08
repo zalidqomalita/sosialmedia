@@ -130,13 +130,15 @@ class model(nn.Module):
         embds = model_out.last_hidden_state # model_out[0][:,0]
         mean_pool = embds.sum(axis=1)/ x['attention_mask'].sum(axis=1).unsqueeze(axis=1)
         return mean_pool
-    
+
+model_checkpoint = "indolem/indobert-base-uncased"
+tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
+
 @st.cache_data 
 def predict_sentiments(sentences):
     #model load
     print(" -------------- Load Sentiment Model ---------")
-    model_checkpoint = "indolem/indobert-base-uncased"
-    tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
+    
 
     model_path = hf_hub_download(
         repo_id="zqomalita/sentimen-model",
