@@ -40,7 +40,7 @@ st.set_page_config(
 
 @alt.theme.register('my_custom_theme', enable=True)
 def my_custom_theme():
-    return alt.themes.ThemeConfig({
+    return alt.theme.ThemeConfig({
         'config': {
             'background': 'white',
             'view': {'stroke': 'transparent'},  # No border around the chart
@@ -55,8 +55,8 @@ def my_custom_theme():
     })
 
 # Register and enable the custom theme
-alt.themes.register('my_custom_theme', my_custom_theme)
-alt.themes.enable('my_custom_theme')
+#alt.themes.register('my_custom_theme', my_custom_theme)
+#alt.themes.enable('my_custom_theme')
 
 
 #######################
