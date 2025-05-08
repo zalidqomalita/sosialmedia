@@ -1,5 +1,4 @@
 import joblib
-import pandas as pd
 from transformers import AutoModel, AutoTokenizer
 import torch
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
