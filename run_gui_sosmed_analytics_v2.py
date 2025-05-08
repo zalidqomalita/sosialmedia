@@ -170,7 +170,7 @@ def predict_sentiments(sentences):
 
     # inference
     with torch.no_grad():
-        outputs = model(input_ids, attention_mask) 
+        outputs = modelSent(input_ids, attention_mask) 
         probabilities = F.softmax(outputs, dim=1)  
         predicted_classes = torch.argmax(probabilities, dim=1)  
 
