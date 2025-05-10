@@ -133,7 +133,7 @@ class model(nn.Module):
 
 
 
-@st.cache_resource
+
 def predict_sentiments(sentences):
     #model load
     print(" -------------- Load Sentiment Model ---------")
