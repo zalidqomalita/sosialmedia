@@ -128,7 +128,50 @@ class model(nn.Module):
         embds = model_out.last_hidden_state # model_out[0][:,0]
         mean_pool = embds.sum(axis=1)/ x['attention_mask'].sum(axis=1).unsqueeze(axis=1)
         return mean_pool
+
+@st.cache_resource
+def load_model():
+    model_checkpoint = "indolem/indobert-base-uncased"
+    tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
+    model = BertClassifier(num_labels=3)
+    model_path = hf_hub_download(
+        repo_id="zqomalita/sentimen-model",
+        filename="sentiment_model.pth",
+        repo_type="model"
+    )
+    model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+    model.to(device)
+    return model, tokenizer
+
+def predict_sentiments(sentences):
+    print("-----------Model Loaded. Start Prediction------------")
     
+    # Tokenize input
+    encodings = tokenizer(
+        sentences,
+        return_tensors="pt",
+        padding=True,
+        truncation=True,
+        max_length=256
+    )
+
+    input_ids = encodings["input_ids"].to(device)
+    attention_mask = encodings["attention_mask"].to(device)
+
+    # inference
+    with torch.no_grad():
+        outputs = model(input_ids, attention_mask)
+        probabilities = F.softmax(outputs, dim=1)
+        predicted_classes = torch.argmax(probabilities, dim=1)
+
+    sentiment_mapping = {1: "positif", 0: "netral", 2: "negatif"}
+    predicted_labels = [sentiment_mapping[class_idx.item()] for class_idx in predicted_classes]
+    scores = probabilities.cpu().numpy()
+
+    return scores, predicted_labels
+
+
+'''
 @st.cache_data 
 def predict_sentiments(sentences):
     #model load
@@ -176,7 +219,7 @@ def predict_sentiments(sentences):
     scores = probabilities.cpu().numpy()
 
     return scores,predicted_labels
-
+'''
 
 class BertClassifier(nn.Module):
     def __init__(self, num_labels):
@@ -508,6 +551,7 @@ def main():
         col2 =  st.columns(1)
         with col2[0]:
             st.markdown('#### Proporsi Sentimen')
+            model, tokenizer = load_model()
             results = predict_sentiments(clean_data.to_list())
             print(results)
             
