@@ -143,7 +143,7 @@ def load_model():
     model.to(device)
     return model, tokenizer
 
-def predict_sentiments(sentences):
+def predict_sentiments(sentences,model, tokenizer):
     print("-----------Model Loaded. Start Prediction------------")
     
     # Tokenize input
@@ -552,7 +552,7 @@ def main():
         with col2[0]:
             st.markdown('#### Proporsi Sentimen')
             model, tokenizer = load_model()
-            results = predict_sentiments(clean_data.to_list())
+            results = predict_sentiments(clean_data.to_list(), model, tokenizer)
             print(results)
             
             polarity_score = pd.DataFrame(results[0], columns=['positif', 'netral', 'negatif'])
