@@ -34,19 +34,24 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded")
 
-@alt.theme.register('my_custom_theme', enable=True)
 def my_custom_theme():
-    return alt.theme.ThemeConfig({
-        'background': 'white',
-        'view': {'stroke': 'transparent'},  # No border around the chart
-        'title': {'fontSize': 20, 'font': 'Arial', 'color': 'black'},
-        'axis': {
-            'domainColor': 'gray',
-            'gridColor': 'lightgray',
-            'labelFontSize': 12,
-            'titleFontSize': 14,
-        }})
+    return {
+        'config': {
+            'background': 'white',
+            'view': {'stroke': 'transparent'},  # No border around the chart
+            'title': {'fontSize': 20, 'font': 'Arial', 'color': 'black'},
+            'axis': {
+                'domainColor': 'gray',
+                'gridColor': 'lightgray',
+                'labelFontSize': 12,
+                'titleFontSize': 14,
+            },
+        }
+    }
 
+# Register and enable the custom theme
+alt.themes.register('my_custom_theme', my_custom_theme)
+alt.themes.enable('my_custom_theme')
 # Register and enable the custom theme
 #alt.theme.register('my_custom_theme', my_custom_theme)
 #alt.theme.enable('my_custom_theme')
